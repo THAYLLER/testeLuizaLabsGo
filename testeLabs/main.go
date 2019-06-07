@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 const CAMINHO string = ""
@@ -15,5 +16,11 @@ func lerTxt(nomeArquivo string) string {
 }
 func main() {
 
-	fmt.Print(lerTxt("NFe.txt"))
+	linhas := strings.Split(string(lerTxt("NFe.txt")), ";")
+
+	for _, v := range linhas {
+
+		fmt.Println(v)
+
+	}
 }

@@ -1,26 +1,51 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"io/ioutil"
-	"strings"
+	"os"
 )
 
 const CAMINHO string = ""
 
-func lerTxt(nomeArquivo string) string {
+func lerTxt(nomeArquivo string) ([]string, error) {
 
-	conteudo, _ := ioutil.ReadFile(CAMINHO + nomeArquivo)
+	file, err := os.Open(CAMINHO + nomeArquivo)
+	if err != nil {
+		return nil, err
+	}
 
-	return string(conteudo)
+	defer file.Close()
+
+	var literalLines []string
+
+	scanner := bufio.NewScanner(file)
+
+	// guarda cada linha em indice diferente do slice
+	for scanner.Scan() {
+		literalLines = append(literalLines, scanner.Text())
+	}
+
+	return literalLines, scanner.Err()
 }
+
 func main() {
 
-	linhas := strings.Split(string(lerTxt("NFe.txt")), ";")
+	var linha []string
 
-	for _, v := range linhas {
+	linha = nil
+	linha, _ = lerTxt("NFe.txt")
 
-		fmt.Println(v)
+	for _, line := range linha {
 
+		if line != "Data;Tipo;CnpjCpf;Numero;Serie;Modelo;Chave;ValorTotal;ValorProd;ValorICMS;ValorIPI;Status" {
+			fmt.Println(line)
+		}
 	}
+	/*
+		transformar o conteudo do txt em json e  criar as rotas
+		estruturar melhor o projeto
+	*/
+	//router := mux.NewRouter()
+	//router.HandleFunc("/contato", GetPeople).Methods("GET")
 }
